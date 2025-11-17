@@ -209,10 +209,10 @@ ExecStart=/usr/bin/ssserver -c config.json
 WorkingDirectory=/etc/shadowsocks-rust
 
 [Install]
-WantedBy=multi-user.target" >/etc/systemd/system/shadowsocks-rust-server.service
+WantedBy=multi-user.target" >/etc/systemd/system/shadowsocks-rust.service
 	systemctl daemon-reload
-	systemctl restart shadowsocks-rust-server
-	systemctl enable shadowsocks-rust-server
+	systemctl restart shadowsocks-rust
+	systemctl enable shadowsocks-rust
 }
 function DownloadCloak() {
 	url=$(wget -O - -o /dev/null https://api.github.com/repos/cbeuw/Cloak/releases/latest | grep "/ck-server-linux-$arch-" | grep -P 'https(.*)[^"]' -o)
@@ -331,7 +331,7 @@ if [ -d "/etc/cloak" ]; then
 			echo "Ok once more here is your UDID: $ckbuid"
 			echo "You can list it again later with running this script again."
 		fi
-		systemctl restart cloak-server
+		systemctl restart cloak
 		echo "Done"
 		;;
 	#Remove user
@@ -365,7 +365,7 @@ if [ -d "/etc/cloak" ]; then
 			kill $!
 			wait $! 2>/dev/null
 		fi
-		systemctl restart cloak-server
+		systemctl restart cloak
 		echo "Done"
 		;;
 	#Show UIDs
@@ -467,7 +467,7 @@ if [ -d "/etc/cloak" ]; then
 			echo "$conf" >ckserver.json
 			rm "$OPTION.json"
 		fi
-		systemctl restart cloak-server
+		systemctl restart cloak
 		echo "Done"
 		;;
 	#Firewall rules
@@ -490,12 +490,12 @@ if [ -d "/etc/cloak" ]; then
 		if [ "$OPTION" == "y" ] || [ "$OPTION" == "Y" ]; then
 			GetArch
 			#stop and remove
-			systemctl stop cloak-server
+			systemctl stop cloak
 			rm -f /usr/bin/ck-server
 			rm -f /usr/bin/ck-client
 			#download new binaries
 			DownloadCloak
-			systemctl restart cloak-server
+			systemctl restart cloak
 			echo "Done"
 		fi
 		;;
@@ -503,12 +503,12 @@ if [ -d "/etc/cloak" ]; then
 	8)
 		read -r -p "I will also uninstall shadowsocks service (not the app). But I will keep some packages like jq. Continue?(y/n) " OPTION
 		if [ "$OPTION" == "y" ] || [ "$OPTION" == "Y" ]; then
-			systemctl stop shadowsocks-rust-server
-			systemctl disable shadowsocks-rust-server
-			systemctl stop cloak-server
-			systemctl disable cloak-server
-			rm /etc/systemd/system/cloak-server.service
-			rm /etc/systemd/system/shadowsocks-rust-server.service
+			systemctl stop shadowsocks-rust
+			systemctl disable shadowsocks-rust
+			systemctl stop cloak
+			systemctl disable cloak
+			rm /etc/systemd/system/cloak.service
+			rm /etc/systemd/system/shadowsocks-rust.service
 			systemctl daemon-reload
 			if [[ $distro =~ "CentOS" ]]; then
 				firewall-cmd --remove-port="$PORT"/tcp
@@ -725,10 +725,10 @@ ExecStart=/usr/bin/ck-server -c ckserver.json
 WorkingDirectory=/etc/cloak
 
 [Install]
-WantedBy=multi-user.target" >/etc/systemd/system/cloak-server.service
+WantedBy=multi-user.target" >/etc/systemd/system/cloak.service
 systemctl daemon-reload
-systemctl start cloak-server
-systemctl enable cloak-server
+systemctl start cloak
+systemctl enable cloak
 #setup firewall
 if [[ $distro =~ "CentOS" ]]; then
 	SETFIREWALL=true
