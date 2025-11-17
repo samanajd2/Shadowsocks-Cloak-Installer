@@ -37,7 +37,7 @@ arm, arm64, amd64 and i386 architectures are supported.
 ### Installing Cloak 2 Plugin
 Copy and execute this command:
 ```bash
-sudo curl -o Cloak-Installer.sh -L https://https://raw.githubusercontent.com/samanajd2/Shadowsocks-Cloak-Installer/refs/heads/master/Cloak2-Installer.sh && sudo bash Cloak-Installer.sh
+sudo curl -o Cloak-Installer.sh -L https://raw.githubusercontent.com/samanajd2/Shadowsocks-Cloak-Installer/refs/heads/master/Cloak2-Installer.sh && sudo bash Cloak-Installer.sh
 ```
 Answer questions and wait until the setup finishes installing. Installing the shadowsocks is optional.
 #### Install Openvpn or Tor with Cloak
